@@ -7,6 +7,6 @@ package com.zwiggy.zwiggyengine.util;
  * @author Piyush
  *
  */
-public class UserUtility {
+public class UserValidation {
 
 }

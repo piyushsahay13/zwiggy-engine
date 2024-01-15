@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.zwiggy.zwiggyengine.entity;
 
 import java.sql.Date;
@@ -17,13 +14,13 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "USERACCOUNT")
 public class UserAccount {
+	@Id
+	@Column(name = "EMAIL")
+	private String email;
 	@Column(name ="FIRSTNAME")
 	private String fname;
 	@Column(name = "LASTNAME")
 	private String lname;
-	@Id
-	@Column(name = "EMAIL")
-	private String email;
 	@Column(name = "CONTACTNUMBER")
 	private String contactNumber;
 	@Column(name = "ADDRESS")
