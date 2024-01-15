@@ -36,8 +36,8 @@ public class UserAccount {
 	public String getFname() {
 		return fname;
 	}
-	public String getSname() {
-		return sname;
+	public String getLname() {
+		return lname;
 	}
 	public String getEmail() {
 		return email;
