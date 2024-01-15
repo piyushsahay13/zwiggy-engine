@@ -5,17 +5,32 @@ package com.zwiggy.zwiggyengine.entity;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * @author piyush
  */
 
+@Entity
+@Table(name = "USERACCOUNT")
 public class UserAccount {
+	@Column(name ="FIRSTNAME")
 	private String fname;
-	private String sname;
+	@Column(name = "LASTNAME")
+	private String lname;
+	@Id
+	@Column(name = "EMAIL")
 	private String email;
+	@Column(name = "CONTACTNUMBER")
 	private String contactNumber;
+	@Column(name = "ADDRESS")
 	private String address;
+	@Column(name = "USERTYPE")
 	private char usertype;
+	@Column(name = "ACCOUNTCREATIONDATE")
 	private Date userCreationDate;
 	
 	public String getFname() {
