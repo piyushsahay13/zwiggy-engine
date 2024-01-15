@@ -1,4 +1,4 @@
-package com.zwiggy.model;
+package com.zwiggy.zwiggyengine.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,7 +8,6 @@ import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-
 public class Customer {
     @JsonProperty(value = "customerAccountDetails")
     private Account cstmrAccDetails;
@@ -16,4 +15,6 @@ public class Customer {
     private List<Feedback> cstmrFeedback;
     @JsonProperty(value = "orderHistory")
     private List<Order> orderHistory;
+    @JsonProperty(value = "customerCart")
+    private List<Cart> cart;
 }

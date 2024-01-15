@@ -1,4 +1,4 @@
-package com.zwiggy.model;
+package com.zwiggy.zwiggyengine.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
