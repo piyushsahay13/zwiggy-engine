@@ -8,5 +8,7 @@ package com.zwiggy.zwiggyengine.model;
  *
  */
 public enum UserType {
-
+    ADMIN,
+    USER,
+    RESTAURANT
 }

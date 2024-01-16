@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.zwiggy.zwiggyengine.model.Account;
 import com.zwiggy.zwiggyengine.model.Customer;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author piyush
  * User Manager REST endpoints
@@ -24,6 +26,7 @@ import com.zwiggy.zwiggyengine.model.Customer;
 
 @RestController
 @RequestMapping(value = "/user")
+@Slf4j
 public class UserManager {
 	
 	@GetMapping(value = "/FetchAccount", produces = "application/json")
@@ -33,7 +36,8 @@ public class UserManager {
 	
 	@PostMapping(value = "/CreateNewAccount", produces = "application/json")
 	public ResponseEntity<String> getUserDetails(@RequestBody Account user) {
-		String response = null;
+		String response = "Hello";
+		log.info(user.toString());
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 }
