@@ -50,13 +50,11 @@ public class UserRepoServiceImpl implements UserRepoService {
 
 	@Override
 	public boolean deletUser() {
-		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@Override
 	public boolean modifyUser() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

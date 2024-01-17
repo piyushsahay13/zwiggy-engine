@@ -9,10 +9,10 @@ import lombok.Data;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Account {
-	public String fName;
-	public String sName;
-	public String email;
-	public String contactNo;
-	public List<Address> custAddress;
-	public UserType userType;
+	private String fName;
+	private String sName;
+	private String email;
+	private String contactNo;
+	private List<Address> custAddress;
+	private UserType userType;
 }

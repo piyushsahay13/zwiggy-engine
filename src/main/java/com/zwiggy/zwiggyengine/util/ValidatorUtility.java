@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.zwiggy.zwiggyengine.constant.ErrorMsgConstants;
 import com.zwiggy.zwiggyengine.constant.RegexConstanst;
 import com.zwiggy.zwiggyengine.exception.UserValidationException;
 
@@ -18,12 +19,12 @@ public class ValidatorUtility {
 
 	private static final Pattern pattern = Pattern.compile(RegexConstanst.EMAILREGEX);
 
-	public static boolean validateUserId(Optional<String> userid) {
+	public static boolean validateUserId(Optional<String> userid) throws UserValidationException {
 		if(!userid.isEmpty() && isValidEmail(userid.toString())){
 			return true;
 		}
 		else {
-			throw new UserValidationException();
+			throw new UserValidationException(ErrorMsgConstants.INVALID_USERID);
 		}
 	}
 

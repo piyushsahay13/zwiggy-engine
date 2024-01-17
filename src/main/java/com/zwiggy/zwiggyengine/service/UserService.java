@@ -9,5 +9,5 @@ package com.zwiggy.zwiggyengine.service;
  */
 public class UserService {
 
-	public void buildUserAccount()
+	public void buildUserAccount() {}
 }
