@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Data;
 
 /**
  * @author piyush
@@ -13,6 +14,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "USERACCOUNT")
+@Data
 public class UserAccount {
 	@Id
 	@Column(name = "EMAIL")
@@ -29,26 +31,4 @@ public class UserAccount {
 	private char usertype;
 	@Column(name = "ACCOUNTCREATIONDATE")
 	private Date userCreationDate;
-	
-	public String getFname() {
-		return fname;
-	}
-	public String getLname() {
-		return lname;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public String getContactNumber() {
-		return contactNumber;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public char getUsertype() {
-		return usertype;
-	}
-	public Date getUserCreationDate() {
-		return userCreationDate;
-	}
 }
