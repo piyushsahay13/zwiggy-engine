@@ -15,17 +15,13 @@ import com.zwiggy.zwiggyengine.exception.UserValidationException;
  * @author Piyush
  * User detail validation utility 
  */
-public class ValidatorUtility {
+public class RequestValidator {
 
 	private static final Pattern pattern = Pattern.compile(RegexConstanst.EMAILREGEX);
 
-	public static boolean validateUserId(Optional<String> userid) throws UserValidationException {
-		if(!userid.isEmpty() && isValidEmail(userid.toString())){
-			return true;
-		}
-		else {
+	public static void validateUserId(Optional<String> userid) throws UserValidationException {
+		if(userid.isEmpty() || !isValidEmail(userid.toString()))
 			throw new UserValidationException(ErrorMsgConstants.INVALID_USERID);
-		}
 	}
 
 	private static boolean isValidEmail(String email) {

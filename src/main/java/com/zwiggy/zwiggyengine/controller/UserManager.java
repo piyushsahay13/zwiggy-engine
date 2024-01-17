@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zwiggy.zwiggyengine.entity.UserAccount;
+import com.zwiggy.zwiggyengine.exception.UserValidationException;
 import com.zwiggy.zwiggyengine.model.Account;
 import com.zwiggy.zwiggyengine.model.Customer;
 import com.zwiggy.zwiggyengine.service.UserRepoServiceImpl;
-import com.zwiggy.zwiggyengine.util.ValidatorUtility;
+import com.zwiggy.zwiggyengine.util.RequestValidator;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,17 +38,8 @@ public class UserManager {
 	UserRepoServiceImpl userRepoService;
 	
 	@GetMapping(value = "/FetchAccount", produces = "application/json")
-	public ResponseEntity<Customer> getUserDetails(@RequestParam Optional<String> userid) {
-		try {
-			if(ValidatorUtility.validateUserId(userid)) {
-				
-			}
-			else {
-				throw new 
-			}
-		}
-
-			
+	public ResponseEntity<Customer> getUserDetails(@RequestParam Optional<String> userid) throws UserValidationException {
+		RequestValidator.validateUserId(userid);
 //		Customer cust = new Customer();
 //		Optional<UserAccount> userresponse = userRepoService.getUser(userid.toString());
 //		log.info(userresponse);
