@@ -20,19 +20,20 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Service
 @Slf4j
-public class UserRepoServiceImpl implements UserRepoService {
+public class UserRepoServiceImpl implements CrudRepoService {
 	
 	@Autowired
 	private UserAccountRepository repo;
 	
 	@Override
-	public boolean adduser(Account newuser) {
+	public boolean addNewEntry(Object newuser) {
 		UserAccount user = new UserAccount();
-		user.setEmail(newuser.getEmail());
-		user.setAddress(newuser.getCustAddress().get(0).toString());
-		user.setFname(newuser.getFName());
-		user.setLname(newuser.getSName());
-		user.setContactNumber(newuser.getContactNo());
+		Account castUser = (Account) newuser;
+		user.setEmail(castUser.getEmail());
+		user.setAddress(castUser.getAddress().get(0).toString());
+		user.setFname(castUser.getFName());
+		user.setLname(castUser.getSName());
+		user.setContactNumber(castUser.getContactNo());
 		user.setUsertype('U');
 //		user.setUserCreationDate(java.time.LocalDate.now());
 		if(repo.save(user)!=null)
@@ -41,20 +42,20 @@ public class UserRepoServiceImpl implements UserRepoService {
 	}
 
 	@Override
-	public Optional<UserAccount> getUser(String userid) {
-		log.info(userid);
-		Optional<UserAccount> user = repo.findById(userid);
+	public Optional<Object> fetchExistingData(String id) {
+		log.info(id);
+		Optional<UserAccount> user = repo.findById(id);
 		log.info(user.toString());
-		return user;
+		return Optional.of(user.get());
 	}
 
 	@Override
-	public boolean deletUser() {
+	public boolean deleteData() {
 		return false;
 	}
 	
 	@Override
-	public boolean modifyUser() {
+	public boolean modifyExistingData() {
 		return false;
 	}
 

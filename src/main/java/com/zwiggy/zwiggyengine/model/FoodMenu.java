@@ -6,7 +6,9 @@ package com.zwiggy.zwiggyengine.model;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -14,8 +16,11 @@ import lombok.Data;
  *
  */
 @Data
+@Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FoodMenu {
+	@JsonProperty(value = "Cusine")
 	private String cusine;
+	@JsonProperty(value = "FoodItems")
 	private Map<String,String> fooditems;
 }

@@ -11,13 +11,12 @@ import lombok.Data;
 
 /**
  * @author piyush
- *
+ * POJO for Restaurant
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Restaurant {
+public class Restaurant extends Account{
 	private List<FoodMenu> restaurantMenu;
-	private List<Address> restAdress;
 	private List<Feedback> restFeedback;
 	private float avgRating;
 }

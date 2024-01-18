@@ -2,6 +2,10 @@ package com.zwiggy.zwiggyengine.entity;
 
 import java.sql.Date;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.SequenceGenerator;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -10,12 +14,18 @@ import lombok.Data;
 
 /**
  * @author piyush
+ * Entity class for USERACCOUNT table
  */
 
 @Entity
 @Table(name = "USERACCOUNT")
 @Data
+@SequenceGenerator(name = "IDSEQUENCE", sequenceName = "IDSEQUENCE", allocationSize = 1)
 public class UserAccount {
+	@Id
+	@Column(name = "ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "IDSEQUENCE")
+	private Integer uid;
 	@Id
 	@Column(name = "EMAIL")
 	private String email;

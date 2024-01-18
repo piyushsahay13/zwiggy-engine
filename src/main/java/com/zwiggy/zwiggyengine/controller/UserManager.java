@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zwiggy.zwiggyengine.entity.UserAccount;
 import com.zwiggy.zwiggyengine.exception.UserValidationException;
 import com.zwiggy.zwiggyengine.model.Account;
 import com.zwiggy.zwiggyengine.model.Customer;
@@ -40,19 +39,19 @@ public class UserManager {
 	@GetMapping(value = "/FetchAccount", produces = "application/json")
 	public ResponseEntity<Customer> getUserDetails(@RequestParam Optional<String> userid) throws UserValidationException {
 		RequestValidator.validateUserId(userid);
-//		Customer cust = new Customer();
+		Customer cust = null;
 //		Optional<UserAccount> userresponse = userRepoService.getUser(userid.toString());
 //		log.info(userresponse);
 //		if(userresponse.isPresent())
 //			cust.setCstmrAccDetails(null)
-		return new ResponseEntity<>(new Customer(),HttpStatus.OK);
+		return new ResponseEntity<>(cust,HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/CreateNewAccount", produces = "application/json")
 	public ResponseEntity<String> createNewUser(@RequestBody Account user) {
 		String response = null;
 		log.info(user.toString());
-		if(userRepoService.adduser(user))
+		if(userRepoService.addNewEntry(user))
 			response = user.getEmail() + "Added Successfully!";
 		else
 			response = "Failed adding new user.";

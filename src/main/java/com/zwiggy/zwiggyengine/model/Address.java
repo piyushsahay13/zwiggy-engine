@@ -7,10 +7,15 @@ import lombok.Data;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Address {
-        @JsonProperty(value = "doorNumber")
+        @JsonProperty(value = "DoorNumber")
         private String doorno;
+        @JsonProperty(value = "Street")
         private String street;
-        private String pincode;
+        @JsonProperty(value = "City")
         private String city;
+        @JsonProperty(value = "State")
+        private String state;
+        @JsonProperty(value = "Pincode")
+        private String pincode;
         private String googleMapLoc;
 }
