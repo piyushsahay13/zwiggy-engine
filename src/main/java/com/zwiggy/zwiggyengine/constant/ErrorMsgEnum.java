@@ -5,15 +5,17 @@ package com.zwiggy.zwiggyengine.constant;
 
 import lombok.Getter;
 
-/**ErrorMsgEnum
+/**
  * @author piyush
  * Enum to store error message and code combination
+ * 
  */
+
 @Getter
 public enum ErrorMsgEnum {
 	USERIDERROR("ZWENG-0001", "User email ID Validation failed."),
-    INVALIDERRORCODE("ZWENG-0002", "Error Code Invalid"),
-    THIRD("key3", "value3");
+	INVALIDERRORCODE("ZWENG-0002", "Error Code Invalid"),
+    INVALIDUSER("ZWENG-04", "Invalid User Type.");
 
     private final String errorCode;
     private final String errorMsg;

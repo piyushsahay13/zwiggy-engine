@@ -20,7 +20,8 @@ public class RequestValidator {
 	private static final Pattern pattern = Pattern.compile(RegexConstanst.EMAILREGEX);
 
 	public static void validateUserId(Optional<String> userid) throws UserValidationException {
-		if(userid.isEmpty() || !isValidEmail(userid.get()))
+		String email = userid.orElseThrow(() -> new UserValidationException(ErrorMsgEnum.getByErrorCode(ErrorMsgEnum.USERIDERROR)));
+		if(!isValidEmail(email))
 			throw new UserValidationException(ErrorMsgEnum.getByErrorCode(ErrorMsgEnum.USERIDERROR));
 	}
 

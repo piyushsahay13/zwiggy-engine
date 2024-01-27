@@ -30,4 +30,14 @@ public class GlobalExceptionHandler {
 		log.error(err.getErrMsg() + " ::: " +err.getStkTrace());
 		return new ResponseEntity<ErrorResponse>(err,HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	@ExceptionHandler(InvalidUserException.class)
+	protected ResponseEntity<ErrorResponse> handleInvalidUseExcp(String errDes) {
+		ErrorResponse err = new ErrorResponse();
+		err.setErrCd(errDes);
+		err.setErrMsg(errDes);
+		err.setStkTrace(errDes);
+		log.error(err.getErrMsg() + " ::: " +err.getStkTrace());
+		return new ResponseEntity<ErrorResponse>(err,HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }

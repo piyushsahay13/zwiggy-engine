@@ -25,6 +25,9 @@ public class UserRepoServiceImpl implements CrudRepoService {
 	@Autowired
 	private UserAccountRepository repo;
 	
+	@Autowired
+	private UserService usrSvc;
+	
 	@Override
 	public boolean addNewEntry(Object newuser) {
 		UserAccount user = new UserAccount();
@@ -35,17 +38,17 @@ public class UserRepoServiceImpl implements CrudRepoService {
 		user.setLname(castUser.getSName());
 		user.setContactNumber(castUser.getContactNo());
 		user.setUsertype('U');
-//		user.setUserCreationDate(java.time.LocalDate.now());
+		user.setUserCreationDate(usrSvc.getTodaysDate());
 		if(repo.save(user)!=null)
 			return true;
 		return false;
 	}
 
 	@Override
-	public Optional<Object> fetchExistingData(String id) {
-		log.info(id);
+	public Object fetchExistingData(String id) {
+		log.info("Fetching Account details for : " + id);
 		Optional<UserAccount> user = repo.findById(id);
-		log.info(user.toString());
+		log.info("User Details : " + user.toString());
 		return Optional.of(user.get());
 	}
 
