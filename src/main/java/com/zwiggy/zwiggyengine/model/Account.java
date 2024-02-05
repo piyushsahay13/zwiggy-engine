@@ -12,13 +12,14 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class Account {
-    protected Account(String fName, String sName, String email, String contactNo, List<Address> address, UserType userType) {
+    protected Account(String fName, String sName, String email, String contactNo, List<Address> address, UserType userType, String longitudeLatitude) {
         this.fName = fName;
         this.sName = sName;
         this.email = email;
         this.contactNo = contactNo;
         this.address = address;
         this.userType = userType;
+        this.longitudeLatitude = longitudeLatitude;
     }
 	@JsonProperty(value = "FirstName")
 	private String fName;
@@ -32,4 +33,6 @@ public abstract class Account {
 	private List<Address> address;
 	@JsonProperty(value = "UserType")
 	private UserType userType;
+	@JsonProperty(value = "locationCordinates")
+	private String longitudeLatitude;
 }

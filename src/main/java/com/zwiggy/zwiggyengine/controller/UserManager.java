@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zwiggy.zwiggyengine.exception.InvalidUserException;
+import com.zwiggy.zwiggyengine.exception.RepositoryOperationException;
 import com.zwiggy.zwiggyengine.exception.UserValidationException;
 import com.zwiggy.zwiggyengine.model.Account;
-import com.zwiggy.zwiggyengine.model.Customer;
 import com.zwiggy.zwiggyengine.service.UserService;
 import com.zwiggy.zwiggyengine.util.RequestValidator;
 
@@ -45,14 +45,9 @@ public class UserManager {
 	}
 	
 	@PostMapping(value = "/CreateNewAccount", produces = "application/json")
-	public ResponseEntity<String> createNewUser(@RequestBody Account user) {
-		String response = null;
+	public ResponseEntity<String> createNewUser(@RequestBody Account user) throws UserValidationException, InvalidUserException, RepositoryOperationException {
 		log.info(user.toString() + " requested to create new account.");
-		
-//		if(userRepoService.addNewEntry(user))
-//			response = user.getEmail() + "Added Successfully!";
-//		else
-//			response = "Failed adding new user.";
-		return new ResponseEntity<>(response,HttpStatus.OK);
+		RequestValidator.validateUser(user);
+		return new ResponseEntity<>(userService.addNewCustomer(user),HttpStatus.OK);
 	}
 }

@@ -3,6 +3,7 @@
  */
 package com.zwiggy.zwiggyengine.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
@@ -12,6 +13,7 @@ import lombok.Data;
  * Custom Error Response for Zwiggy Engine
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
 	
 	@JsonProperty(value = "ErrorCode")
@@ -21,7 +23,7 @@ public class ErrorResponse {
 	@JsonProperty(value = "Support")
 	private String support;
 	@JsonProperty(value = "StackTrace")
-	private String stkTrace;
+	private StackTraceElement[] stkTrace;
 
 	public ErrorResponse() {
 		this.setSupport("Please reach out to support_engine@zwiggy.com for more help!");

@@ -12,9 +12,9 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Customer extends Account {
     @Builder(builderMethodName = "customerBuilder")
-    public Customer(String fName, String sName, String email, String contactNo, List<Address> address, UserType userType,
+    public Customer(String fName, String sName, String email, String contactNo, List<Address> address, UserType userType, String longitudeLatitude,
                     List<Feedback> cstmrFeedback, List<Order> orderHistory, List<Cart> cart) {
-        super(fName, sName, email, contactNo, address, userType);
+        super(fName, sName, email, contactNo, address, userType, longitudeLatitude);
         this.cstmrFeedback = cstmrFeedback;
         this.orderHistory = orderHistory;
         this.cart = cart;

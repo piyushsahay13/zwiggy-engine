@@ -8,8 +8,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zwiggy.zwiggyengine.constant.AppConstant;
 import com.zwiggy.zwiggyengine.entity.UserAccount;
 import com.zwiggy.zwiggyengine.exception.InvalidUserException;
+import com.zwiggy.zwiggyengine.exception.RepositoryOperationException;
+import com.zwiggy.zwiggyengine.model.Account;
 import com.zwiggy.zwiggyengine.model.Address;
 import com.zwiggy.zwiggyengine.model.Customer;
 import com.zwiggy.zwiggyengine.model.UserType;
@@ -25,6 +28,17 @@ public class UserService {
 	@Autowired
 	private UserRepoServiceImpl userRepoService;
 	
+	public String addNewCustomer(Account userDetails) throws InvalidUserException, RepositoryOperationException {
+		UserAccount user = new UserAccount();
+		user.setEmail(userDetails.getEmail());
+		user.setAddress(userDetails.getAddress().get(0).toString());
+		user.setFname(userDetails.getFName());
+		user.setLname(userDetails.getSName());
+		user.setContactNumber(userDetails.getContactNo());
+		user.setUsertype(UserType.getCodefrmUsrType(userDetails.getUserType()));
+		user.setUserCreationDate(getTodaysDate());
+		return userRepoService.addNewEntry(user) + AppConstant.USERADDED;
+	}
 	
 	public Customer getCustomerDetailfromId(Optional<String> userid) throws InvalidUserException {
 		String userIdToString  = userid.get().toString();
@@ -37,22 +51,14 @@ public class UserService {
 				.contactNo(userresponse.getContactNumber())
 				.address(address)
 				.userType(UserType.getCodeUsrType(userresponse.getUsertype()))
+				.longitudeLatitude(null)
 				.cstmrFeedback(null)
 				.orderHistory(null)
 				.cart(null)
 				.build();
 		return customer;
 	}
-//	java.lang.String,
-//	java.lang.String,
-//	java.lang.String,
-//	java.lang.String,
-//	java.util.List<com.zwiggy.zwiggyengine.model.Address>,
-//	com.zwiggy.zwiggyengine.model.UserType,
-//	java.util.List<com.zwiggy.zwiggyengine.model.Feedback>,
-//	java.util.List<com.zwiggy.zwiggyengine.model.Order>,
-//	java.util.List<com.zwiggy.zwiggyengine.model.Cart>
-	//found:    java.util.List<com.zwiggy.zwiggyengine.model.Feedback>,java.util.List<com.zwiggy.zwiggyengine.model.Order>,java.util.List<com.zwiggy.zwiggyengine.model.Cart>
+
 	public List<Address> AddressDeserializerService() {
 		return null;
 	}

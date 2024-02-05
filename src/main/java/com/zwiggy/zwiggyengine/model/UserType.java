@@ -54,4 +54,13 @@ public enum UserType {
         }
         throw new InvalidUserException(ErrorMsgEnum.getByErrorCode(ErrorMsgEnum.INVALIDUSER) + usrCode);
     }
+    
+    public static char getCodefrmUsrType(UserType usrTyp) throws InvalidUserException {
+        for (UserType usr : values()) {
+            if (usr.equals(usrTyp)) {
+                return usr.userTypeCode;
+            }
+        }
+        throw new InvalidUserException(ErrorMsgEnum.getByErrorCode(ErrorMsgEnum.INVALIDUSER));
+    }
 }

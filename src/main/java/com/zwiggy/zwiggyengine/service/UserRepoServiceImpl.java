@@ -6,10 +6,12 @@ package com.zwiggy.zwiggyengine.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
+import com.zwiggy.zwiggyengine.constant.ErrorMsgEnum;
 import com.zwiggy.zwiggyengine.entity.UserAccount;
-import com.zwiggy.zwiggyengine.model.Account;
+import com.zwiggy.zwiggyengine.exception.RepositoryOperationException;
 import com.zwiggy.zwiggyengine.repositories.UserAccountRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,23 +27,15 @@ public class UserRepoServiceImpl implements CrudRepoService {
 	@Autowired
 	private UserAccountRepository repo;
 	
-	@Autowired
-	private UserService usrSvc;
-	
 	@Override
-	public boolean addNewEntry(Object newuser) {
-		UserAccount user = new UserAccount();
-		Account castUser = (Account) newuser;
-		user.setEmail(castUser.getEmail());
-		user.setAddress(castUser.getAddress().get(0).toString());
-		user.setFname(castUser.getFName());
-		user.setLname(castUser.getSName());
-		user.setContactNumber(castUser.getContactNo());
-		user.setUsertype('U');
-		user.setUserCreationDate(usrSvc.getTodaysDate());
-		if(repo.save(user)!=null)
-			return true;
-		return false;
+	public String addNewEntry(Object newuser) throws RepositoryOperationException {
+		try {
+			return repo.save((UserAccount) newuser).getEmail();
+		}
+		catch(IllegalArgumentException | OptimisticLockingFailureException exp) {
+			log.info("Exception occured while saving to repository : " + exp.getCause() + " ::: " + exp.getStackTrace());
+			throw new RepositoryOperationException(ErrorMsgEnum.getByErrorCode(ErrorMsgEnum.HIBERNATERROR),exp.getCause());
+		}
 	}
 
 	@Override

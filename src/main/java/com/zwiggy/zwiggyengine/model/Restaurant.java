@@ -17,8 +17,8 @@ import lombok.Data;
 public class Restaurant extends Account {
 	
 	public Restaurant(String fName, String sName, String email, String contactNo, List<Address> address,
-			UserType userType, List<Feedback> restFeedback, List<FoodMenu> restaurantMenu, float avgRating) {
-		super(fName, sName, email, contactNo, address, userType);
+			UserType userType, String longitudeLatitude, List<Feedback> restFeedback, List<FoodMenu> restaurantMenu, float avgRating) {
+		super(fName, sName, email, contactNo, address, userType, longitudeLatitude);
 		this.restFeedback = restFeedback;
 		this.avgRating = avgRating;
 		this.restaurantMenu = restaurantMenu;
