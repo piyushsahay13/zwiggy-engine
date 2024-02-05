@@ -37,14 +37,14 @@ public class UserManager {
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping(value = "/FetchAccount", produces = "application/json")
+	@GetMapping(value = "/fetchAccount/v1", produces = "application/json")
 	public ResponseEntity<Object> getUserDetails(@RequestParam Optional<String> userid) throws UserValidationException, InvalidUserException {
-		log.info("Get details for user id {} : "+ userid.get());
 		RequestValidator.validateUserId(userid);
+
 		return new ResponseEntity<>(userService.getCustomerDetailfromId(userid),HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/CreateNewAccount", produces = "application/json")
+	@PostMapping(value = "/CreateNewAccount/v1", produces = "application/json")
 	public ResponseEntity<String> createNewUser(@RequestBody Account user) throws UserValidationException, InvalidUserException, RepositoryOperationException {
 		log.info(user.toString() + " requested to create new account.");
 		RequestValidator.validateUser(user);

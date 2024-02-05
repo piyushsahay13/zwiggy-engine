@@ -12,10 +12,12 @@ import com.zwiggy.zwiggyengine.constant.RegexConstanst;
 import com.zwiggy.zwiggyengine.exception.UserValidationException;
 import com.zwiggy.zwiggyengine.model.Account;
 import com.zwiggy.zwiggyengine.model.UserType;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author piyush User detail validation utility
  */
+@Slf4j
 public class RequestValidator {
 
 	private static final Pattern pattern = Pattern.compile(RegexConstanst.EMAILREGEX);
@@ -30,6 +32,7 @@ public class RequestValidator {
 	public static void validateUserId(Optional<String> userid) throws UserValidationException {
 		String email = userid
 				.orElseThrow(() -> new UserValidationException(ErrorMsgEnum.getByErrorCode(ErrorMsgEnum.USERIDERROR)));
+		log.info("Get details for user id {} : "+ email);
 		if (!isValidEmail(email))
 			throw new UserValidationException(ErrorMsgEnum.getByErrorCode(ErrorMsgEnum.USERIDERROR));
 	}

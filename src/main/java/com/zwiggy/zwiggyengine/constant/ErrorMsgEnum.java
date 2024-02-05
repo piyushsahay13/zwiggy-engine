@@ -8,18 +8,17 @@ import lombok.Getter;
 /**
  * @author piyush
  * Enum to store error message and code combination
- * 
  */
 
 @Getter
 public enum ErrorMsgEnum {
-	USERIDERROR("ZWENG-0001", "User email ID Validation failed."),
-	INVALIDERRORCODE("ZWENG-0002", "Error Code Invalid"),
-    INVALIDUSER("ZWENG-04", "Invalid User Type."),
-	USERCONTACFORMATERR("ZWENG-0004", "Cotact Detail format is invalid."),
+	USERIDERROR("ZWENG-0001", "User email id validation failed."),
+	INVALIDERRORCODE("ZWENG-0002", "Error code invalid"),
+    INVALIDUSER("ZWENG-04", "Invalid user Type."),
+	USERCONTACFORMATERR("ZWENG-0004", "Contact detail format is invalid."),
 	NAMEISNOTVALID("ZWENG-0005", "UserName contains invalid value."),
-	HIBERNATERROR("ZWENG-0006", "Exception occured while performing repository operation"),
-	GENERALEXCEPTION("ZWENG-0007", "Exception occured!! please reach out to our support. ");
+	HIBERNATERROR("ZWENG-0006", "Exception occurred while performing repository operation"),
+	GENERALEXCEPTION("ZWENG-0007", "Exception occurred!! please reach out to our support. ");
 	
     private final String errorCode;
     private final String errorMsg;
