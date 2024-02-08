@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.zwiggy.zwiggyengine.constant.ErrorMsgEnum;
+import com.zwiggy.zwiggyengine.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +14,6 @@ import com.zwiggy.zwiggyengine.constant.AppConstant;
 import com.zwiggy.zwiggyengine.entity.UserAccount;
 import com.zwiggy.zwiggyengine.exception.InvalidUserException;
 import com.zwiggy.zwiggyengine.exception.RepositoryOperationException;
-import com.zwiggy.zwiggyengine.model.Account;
-import com.zwiggy.zwiggyengine.model.Address;
-import com.zwiggy.zwiggyengine.model.Customer;
-import com.zwiggy.zwiggyengine.model.UserType;
 
 /**
  * @author piyush
@@ -28,7 +26,7 @@ public class UserService {
 	@Autowired
 	private UserRepoServiceImpl userRepoService;
 	
-	public String addNewCustomer(Account userDetails) throws InvalidUserException, RepositoryOperationException {
+	public Response addNewCustomer(Customer userDetails) throws InvalidUserException, RepositoryOperationException {
 		UserAccount user = new UserAccount();
 		user.setEmail(userDetails.getEmail());
 		user.setAddress(userDetails.getAddress().get(0).toString());
@@ -37,29 +35,31 @@ public class UserService {
 		user.setContactNumber(userDetails.getContactNo());
 		user.setUsertype(UserType.getCodefrmUsrType(userDetails.getUserType()));
 		user.setUserCreationDate(getTodaysDate());
-		return userRepoService.addNewEntry(user) + AppConstant.USERADDED;
+		return Response.builder()
+				.responseMsg(userRepoService.addNewEntry(user) + AppConstant.USERADDED)
+				.respType(AppConstant.SUCCESS)
+				.build();
 	}
 	
-	public Customer getCustomerDetailfromId(Optional<String> userid) throws InvalidUserException {
-		String userIdToString  = userid.get().toString();
-		UserAccount userresponse = (UserAccount) userRepoService.fetchExistingData(userIdToString);
+	public Customer getCustomerDetailfromId(Optional<String> userid) throws InvalidUserException, RepositoryOperationException {
+		String userIdToString = userid.orElseThrow(() -> new InvalidUserException(ErrorMsgEnum.getByErrorCode(ErrorMsgEnum.USERIDERROR)));
+		UserAccount response = (UserAccount) userRepoService.fetchExistingData(userIdToString);
 		List<Address> address = new ArrayList<>();
-		Customer customer = Customer.customerBuilder()
-				.fName(userresponse.getFname())
-				.sName(userresponse.getLname())
-				.email(userresponse.getEmail())
-				.contactNo(userresponse.getContactNumber())
+		return Customer.customerBuilder()
+				.fName(response.getFname())
+				.sName(response.getLname())
+				.email(response.getEmail())
+				.contactNo(response.getContactNumber())
 				.address(address)
-				.userType(UserType.getCodeUsrType(userresponse.getUsertype()))
+				.userType(UserType.getCodeUsrType(response.getUsertype()))
 				.longitudeLatitude(null)
 				.cstmrFeedback(null)
 				.orderHistory(null)
 				.cart(null)
 				.build();
-		return customer;
 	}
 
-	public List<Address> AddressDeserializerService() {
+	public List<Address> addressDeserializerService() {
 		return null;
 	}
 	

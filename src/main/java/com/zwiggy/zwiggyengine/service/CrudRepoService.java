@@ -8,7 +8,7 @@ import com.zwiggy.zwiggyengine.exception.RepositoryOperationException;
  */
 public interface CrudRepoService {
 	public String addNewEntry(Object obj) throws RepositoryOperationException;
-	public Object fetchExistingData(String id);
+	public Object fetchExistingData(String id) throws RepositoryOperationException;
 	public boolean deleteData();
 	public boolean modifyExistingData();
 }
