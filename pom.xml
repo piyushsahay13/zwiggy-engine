@@ -75,7 +75,14 @@
 			<artifactId>spring-restdocs-mockmvc</artifactId>
 			<scope>test</scope>
 		</dependency>
-<!--		<dependency>-->
+		<!-- Google Maps Services -->
+		<dependency>
+			<groupId>com.google.maps</groupId>
+			<artifactId>google-maps-services</artifactId>
+			<version>0.15.0</version>
+		</dependency>
+
+		<!--		<dependency>-->
 <!--			<groupId>io.springfox</groupId>-->
 <!--			<artifactId>springfox-swagger2</artifactId>-->
 <!--			<version>3.0.0</version>-->
@@ -96,7 +103,12 @@
 			<artifactId>jakarta.persistence-api</artifactId>
 			<version>3.1.0</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.5.20</version>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

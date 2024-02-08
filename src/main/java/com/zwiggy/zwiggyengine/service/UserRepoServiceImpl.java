@@ -3,6 +3,7 @@
  */
 package com.zwiggy.zwiggyengine.service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +33,27 @@ public class UserRepoServiceImpl implements CrudRepoService {
 		try {
 			return repo.save((UserAccount) newuser).getEmail();
 		}
-		catch(IllegalArgumentException | OptimisticLockingFailureException exp) {
+		catch(IllegalArgumentException exp ) {
 			log.info("Exception occured while saving to repository : " + exp.getCause() + " ::: " + exp.getStackTrace());
-			throw new RepositoryOperationException(ErrorMsgEnum.getByErrorCode(ErrorMsgEnum.HIBERNATERROR),exp.getCause());
+			throw new RepositoryOperationException(ErrorMsgEnum.getByErrorCode(ErrorMsgEnum.HIBERNATERROR),exp);
+		}
+		catch(OptimisticLockingFailureException exp) {
+			throw exp;
 		}
 	}
 
 	@Override
-	public Object fetchExistingData(String id) {
-		log.info("Fetching Account details for : " + id);
-		Optional<UserAccount> user = repo.findById(id);
-		log.info("User Details : " + user.toString());
-		return Optional.of(user.get());
+	public Object fetchExistingData(String id) throws RepositoryOperationException {
+		try {
+			log.info("Fetching Account details for : " + id);
+			Optional<UserAccount> user = repo.findById(id);
+			log.info("User Details : " + user.toString());
+			return user.get();
+		}
+		catch (NoSuchElementException exp) {
+			log.info("Exception occured while fetching from repository : " + exp.getMessage() + " ::: " + exp.getStackTrace());
+			throw new RepositoryOperationException(ErrorMsgEnum.getByErrorCode(ErrorMsgEnum.USERNOTEXIST),exp);
+		}
 	}
 
 	@Override

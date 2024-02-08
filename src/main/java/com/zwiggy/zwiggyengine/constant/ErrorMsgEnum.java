@@ -12,13 +12,16 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorMsgEnum {
-	USERIDERROR("ZWENG-0001", "User email id validation failed."),
-	INVALIDERRORCODE("ZWENG-0002", "Error code invalid"),
-    INVALIDUSER("ZWENG-04", "Invalid user Type."),
+	USERIDERROR("ZWENG-0001", "Not a valid email id to create account."),
+	INVALIDERRORCODE("ZWENG-0002", "Error code is invalid"),
+    INVALIDUSER("ZWENG-0003", "Invalid user Type."),
 	USERCONTACFORMATERR("ZWENG-0004", "Contact detail format is invalid."),
 	NAMEISNOTVALID("ZWENG-0005", "UserName contains invalid value."),
 	HIBERNATERROR("ZWENG-0006", "Exception occurred while performing repository operation"),
-	GENERALEXCEPTION("ZWENG-0007", "Exception occurred!! please reach out to our support. ");
+	GENERALEXCEPTION("ZWENG-0007", "Exception occurred!! "),
+    USERNOTEXIST("ZWENG-0008", "User does not exist please create new account."),
+    USERTYPEMISMATCH("ZWENG-0009", "UserType is invalid it should be USER."),
+    GEOLOCERROR("ZWENG-0010", "Geo location of user is invalid.");
 	
     private final String errorCode;
     private final String errorMsg;

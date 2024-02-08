@@ -16,16 +16,16 @@ import lombok.Getter;
 @Getter
 public enum UserType {
     ADMIN('A',"Admin"),
-    USER('U',"User"),
+    USER('C',"Customer"),
     RESTAURANT('R',"Restaurant");
     
     
     private final char userTypeCode;
-    private final String UserTypeDesc;
+    private final String userTypeDesc;
 
-    UserType(char userTypeCode, String UserTypeDesc) {
+    UserType(char userTypeCode, String userTypeDesc) {
         this.userTypeCode = userTypeCode;
-        this.UserTypeDesc = UserTypeDesc;
+        this.userTypeDesc = userTypeDesc;
     }
 
     public static String getDescUsrCode(char usrCode) throws InvalidUserException {
@@ -39,7 +39,7 @@ public enum UserType {
     
     public static char getCodeUsrDesc(String usrDesc) throws InvalidUserException {
         for (UserType usr : values()) {
-            if (usr.UserTypeDesc.equals(usrDesc)) {
+            if (usr.userTypeDesc.equals(usrDesc)) {
                 return usr.getUserTypeCode();
             }
         }

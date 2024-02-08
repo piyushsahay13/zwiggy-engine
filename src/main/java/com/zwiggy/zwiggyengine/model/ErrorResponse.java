@@ -22,10 +22,13 @@ public class ErrorResponse {
 	private String errMsg;
 	@JsonProperty(value = "Support")
 	private String support;
+	@JsonProperty(value = "Cause")
+	private String excCause;
 	@JsonProperty(value = "StackTrace")
 	private StackTraceElement[] stkTrace;
 
+
 	public ErrorResponse() {
-		this.setSupport("Please reach out to support_engine@zwiggy.com for more help!");
+		this.setSupport("support_engine@zwiggy.com");
 	}
 }

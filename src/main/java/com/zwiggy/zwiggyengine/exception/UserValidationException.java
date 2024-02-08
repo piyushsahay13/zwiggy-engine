@@ -1,6 +1,5 @@
 package com.zwiggy.zwiggyengine.exception;
 
-import com.zwiggy.zwiggyengine.constant.ErrorMsgEnum;
 
 /**
  * @author piyush

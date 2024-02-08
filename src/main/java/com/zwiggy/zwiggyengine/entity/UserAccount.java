@@ -1,10 +1,6 @@
 package com.zwiggy.zwiggyengine.entity;
 
 import java.util.Date;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -22,12 +18,7 @@ import lombok.Data;
 @Entity
 @Table(name = "USERACCOUNT")
 @Data
-@SequenceGenerator(name = "IDSEQUENCE", sequenceName = "IDSEQUENCE", allocationSize = 1)
 public class UserAccount {
-//	@Id
-	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "IDSEQUENCE")
-	private Integer uid;
 	@Id
 	@Column(name = "EMAIL")
 	private String email;
