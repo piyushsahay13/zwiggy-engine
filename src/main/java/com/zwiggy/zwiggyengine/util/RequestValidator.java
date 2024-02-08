@@ -75,7 +75,6 @@ public class RequestValidator {
 		List<Double> geoloc = CommonUtility.geolocConverter(address.get(0).getGoogleMapLoc());
 		if(!locService.validateLocation(geoloc.get(0),geoloc.get(1)))
 			throw new UserValidationException(ErrorMsgEnum.getByErrorCode(ErrorMsgEnum.GEOLOCERROR));
-
 	}
 
 }
