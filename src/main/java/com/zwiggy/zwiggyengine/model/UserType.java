@@ -17,7 +17,8 @@ import lombok.Getter;
 public enum UserType {
     ADMIN('A',"Admin"),
     USER('C',"Customer"),
-    RESTAURANT('R',"Restaurant");
+    RESTAURANT('R',"Restaurant"),
+    USER_RESTAURANT('Z',"Restaurant User");
     
     
     private final char userTypeCode;

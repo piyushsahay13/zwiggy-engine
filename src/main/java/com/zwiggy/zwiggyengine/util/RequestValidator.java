@@ -12,14 +12,12 @@ import com.zwiggy.zwiggyengine.constant.ErrorMsgEnum;
 import com.zwiggy.zwiggyengine.constant.RegexConstanst;
 import com.zwiggy.zwiggyengine.exception.InvalidUserException;
 import com.zwiggy.zwiggyengine.exception.UserValidationException;
-import com.zwiggy.zwiggyengine.model.Account;
+
 import com.zwiggy.zwiggyengine.model.Address;
 import com.zwiggy.zwiggyengine.model.Customer;
+import com.zwiggy.zwiggyengine.model.Restaurant;
 import com.zwiggy.zwiggyengine.model.UserType;
-import com.zwiggy.zwiggyengine.service.LocationService;
-import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author piyush User detail validation utility
@@ -27,15 +25,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Slf4j
 public class RequestValidator {
 
-	private static LocationService locService;
-
-	@Autowired
-	public RequestValidator(LocationService locService) {
-		this.locService = locService;
-	}
 	private static final Pattern pattern = Pattern.compile(RegexConstanst.EMAILREGEX);
 
 	public static void validateUser(Customer user,char usertyp) throws UserValidationException, InvalidUserException {
+		validateUserId(Optional.ofNullable(user.getEmail()));
+		validateContactNum(user.getContactNo());
+		validateName(user.getFName(), user.getSName());
+		validateUserType(user.getUserType(),usertyp);
+		validaAddress(user.getAddress());
+	}
+	public static void validateRestaurant(Restaurant user, char usertyp) throws UserValidationException, InvalidUserException {
 		validateUserId(Optional.ofNullable(user.getEmail()));
 		validateContactNum(user.getContactNo());
 		validateName(user.getFName(), user.getSName());
@@ -73,8 +72,9 @@ public class RequestValidator {
 
 	private static void validaAddress(List<Address> address) throws UserValidationException {
 		List<Double> geoloc = CommonUtility.geolocConverter(address.get(0).getGoogleMapLoc());
-		if(!locService.validateLocation(geoloc.get(0),geoloc.get(1)))
+		if(!CommonUtility.isValidLatitude(geoloc.get(0)) || !CommonUtility.isValidLongitude(geoloc.get(1)))
 			throw new UserValidationException(ErrorMsgEnum.getByErrorCode(ErrorMsgEnum.GEOLOCERROR));
+
 	}
 
 }

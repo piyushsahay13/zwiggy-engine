@@ -5,9 +5,8 @@ package com.zwiggy.zwiggyengine.controller;
 
 import java.util.Optional;
 
-import com.zwiggy.zwiggyengine.model.Customer;
-import com.zwiggy.zwiggyengine.model.Response;
-import com.zwiggy.zwiggyengine.model.UserType;
+import com.zwiggy.zwiggyengine.model.*;
+import com.zwiggy.zwiggyengine.service.CommonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
@@ -25,8 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.zwiggy.zwiggyengine.exception.InvalidUserException;
 import com.zwiggy.zwiggyengine.exception.RepositoryOperationException;
 import com.zwiggy.zwiggyengine.exception.UserValidationException;
-import com.zwiggy.zwiggyengine.model.Account;
-import com.zwiggy.zwiggyengine.service.UserService;
 import com.zwiggy.zwiggyengine.util.RequestValidator;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserManager {
 	
 	@Autowired
-	private UserService userService;
+	private CommonService userService;
 
 
 	@ApiOperation(value = "Get user account detail", notes = "This endpoint returns user information based on usertype.")
@@ -57,8 +54,16 @@ public class UserManager {
 	@ApiOperation(value = "Create new customer account", notes = "This endpoint create a new customer.")
 	@PostMapping(value = "/createCustomer/v1", produces = "application/json")
 	public ResponseEntity<Response> createNewUser(@Valid @RequestBody Customer user) throws UserValidationException, InvalidUserException, RepositoryOperationException {
-		log.info(user.toString() + " requested to create new account.");
+		log.info(user.toString() + " requested to create new customer account.");
 		RequestValidator.validateUser(user, UserType.getCodefrmUsrType(UserType.USER));
 		return new ResponseEntity<>(userService.addNewCustomer(user),HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "Create new restautrant account", notes = "This endpoint create a new restaurant.")
+	@PostMapping(value = "/createRestaurant/v1", produces = "application/json")
+	public ResponseEntity<Response> createNewUser(@Valid @RequestBody Restaurant user) throws UserValidationException, InvalidUserException, RepositoryOperationException {
+		log.info(user.toString() + " requested to create new restaurant account.");
+		RequestValidator.validateRestaurant(user, UserType.getCodefrmUsrType(UserType.RESTAURANT));
+		return new ResponseEntity<>(userService.addNewRestaurant(user),HttpStatus.OK);
 	}
 }
