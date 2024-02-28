@@ -14,5 +14,9 @@ public final class AppConstant {
 	public static final String SUCCESS = "Sucess";
 	public static final String FAILURE = "Failure";
 	public static final String COLANSEP = " ::: ";
+	public static final String RESTADDED = " restaurant added successfully!";
+
+	public static final String EMAIL_VERIFY = "Please check your inbox to verify your email Id.";
+
 
 }

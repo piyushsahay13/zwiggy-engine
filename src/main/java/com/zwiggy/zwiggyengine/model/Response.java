@@ -1,5 +1,6 @@
 package com.zwiggy.zwiggyengine.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -10,11 +11,15 @@ import lombok.Data;
  */
 @Data
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Response {
 
+    @JsonProperty(value = "RestaurantId")
+    private String restId;
     @JsonProperty(value = "ResponseMessage")
     private String responseMsg;
     @JsonProperty(value = "ResponseType")
     private String respType;
-
+    @JsonProperty(value = "UserLoginEmail")
+    private String emailId;
 }

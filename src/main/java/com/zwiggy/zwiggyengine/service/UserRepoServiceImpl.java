@@ -66,4 +66,8 @@ public class UserRepoServiceImpl implements CrudRepoService {
 		return false;
 	}
 
+	public boolean userExist(String userid) {
+        return repo.existsById(userid);
+    }
+
 }

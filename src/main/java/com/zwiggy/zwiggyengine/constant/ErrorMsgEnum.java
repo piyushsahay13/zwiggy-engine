@@ -21,7 +21,8 @@ public enum ErrorMsgEnum {
 	GENERALEXCEPTION("ZWENG-0007", "Exception occurred!! "),
     USERNOTEXIST("ZWENG-0008", "User does not exist please create new account."),
     USERTYPEMISMATCH("ZWENG-0009", "UserType is invalid it should be USER."),
-    GEOLOCERROR("ZWENG-0010", "Geo location of user is invalid.");
+    GEOLOCERROR("ZWENG-0010", "Geo location of user is invalid."),
+    USEREXIST("ZWENG-0011", "Email ID already registered.");
 	
     private final String errorCode;
     private final String errorMsg;
