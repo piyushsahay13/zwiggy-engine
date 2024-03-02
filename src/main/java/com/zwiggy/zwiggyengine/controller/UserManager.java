@@ -46,14 +46,14 @@ public class UserManager {
 
 	@ApiOperation(value = "Get user account detail", notes = "This endpoint returns user information based on usertype.")
 	@GetMapping(value = "/fetchAccount", produces = "application/json")
-	public ResponseEntity<Object> getUserDetails(@RequestParam Optional<String> userid) throws UserValidationException, InvalidUserException, RepositoryOperationException {
+	public ResponseEntity<Object> getUserDetails(@RequestParam(name = "userid", required = true) Optional<String> userid) throws UserValidationException, InvalidUserException, RepositoryOperationException {
 		RequestValidator.validateUserId(userid);
 		return new ResponseEntity<>(userService.getCustomerDetailfromId(userid),HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Create new customer account", notes = "This endpoint create a new customer.")
 	@PostMapping(value = "/createCustomer/v1", produces = "application/json")
-	public ResponseEntity<Response> createNewUser(@Valid @RequestBody Customer user) throws UserValidationException, InvalidUserException, RepositoryOperationException {
+	public ResponseEntity<GenericResponse> createNewUser(@Valid @RequestBody Customer user) throws UserValidationException, InvalidUserException, RepositoryOperationException {
 		log.info(user.toString() + " requested to create new customer account.");
 		RequestValidator.validateUser(user, UserType.getCodefrmUsrType(UserType.USER));
 		return new ResponseEntity<>(userService.addNewCustomer(user),HttpStatus.OK);
@@ -61,7 +61,7 @@ public class UserManager {
 
 	@ApiOperation(value = "Create new restautrant account", notes = "This endpoint create a new restaurant.")
 	@PostMapping(value = "/createRestaurant/v1", produces = "application/json")
-	public ResponseEntity<Response> createNewUser(@Valid @RequestBody Restaurant user) throws UserValidationException, InvalidUserException, RepositoryOperationException {
+	public ResponseEntity<GenericResponse> createNewUser(@RequestBody Restaurant user) throws UserValidationException, InvalidUserException, RepositoryOperationException {
 		log.info(user.toString() + " requested to create new restaurant account.");
 		RequestValidator.validateRestaurant(user, UserType.getCodefrmUsrType(UserType.RESTAURANT));
 		return new ResponseEntity<>(userService.addNewRestaurant(user),HttpStatus.OK);

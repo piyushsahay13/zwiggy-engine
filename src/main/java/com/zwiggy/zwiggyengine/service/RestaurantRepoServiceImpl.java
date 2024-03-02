@@ -1,13 +1,17 @@
 package com.zwiggy.zwiggyengine.service;
 
 import com.zwiggy.zwiggyengine.constant.ErrorMsgEnum;
-import com.zwiggy.zwiggyengine.entity.Restaurants;
+import com.zwiggy.zwiggyengine.entity.RestaurantsEntity;
+import com.zwiggy.zwiggyengine.entity.UserAccountEntity;
 import com.zwiggy.zwiggyengine.exception.RepositoryOperationException;
 import com.zwiggy.zwiggyengine.repositories.RestaurantRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -26,7 +30,7 @@ public class RestaurantRepoServiceImpl implements CrudRepoService {
     @Override
     public String addNewEntry(Object restDetails) throws RepositoryOperationException {
         try {
-            return repo.save((Restaurants) restDetails).getRestaurantId();
+            return repo.save((RestaurantsEntity) restDetails).getRestaurantId();
         }
         catch(IllegalArgumentException exp ) {
             log.info("Exception occured while saving to repository : " + exp.getCause() + " ::: " + exp.getStackTrace());
@@ -46,7 +50,16 @@ public class RestaurantRepoServiceImpl implements CrudRepoService {
      */
     @Override
     public Object fetchExistingData(String id) throws RepositoryOperationException {
-        return null;
+        try {
+            log.info("Fetching Account details for : " + id);
+            Optional<RestaurantsEntity> user = repo.findByRestaurantId(id);
+            log.info("User Details : " + user.toString());
+            return user.get();
+        }
+        catch (NoSuchElementException exp) {
+            log.info("Exception occured while fetching from repository : " + exp.getMessage() + " ::: " + exp.getStackTrace());
+            throw new RepositoryOperationException(ErrorMsgEnum.getByErrorCode(ErrorMsgEnum.USERNOTEXIST),exp);
+        }
     }
 
     /**

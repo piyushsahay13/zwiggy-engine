@@ -11,7 +11,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import com.zwiggy.zwiggyengine.constant.ErrorMsgEnum;
-import com.zwiggy.zwiggyengine.entity.UserAccount;
+import com.zwiggy.zwiggyengine.entity.UserAccountEntity;
 import com.zwiggy.zwiggyengine.exception.RepositoryOperationException;
 import com.zwiggy.zwiggyengine.repositories.UserAccountRepository;
 
@@ -27,11 +27,18 @@ public class UserRepoServiceImpl implements CrudRepoService {
 	
 	@Autowired
 	private UserAccountRepository repo;
-	
+
+	/**
+	 * Adds a new entry to the repository.
+	 *
+	 * @param newuser The object to be added.
+	 * @return A message indicating the success or failure of the operation.
+	 * @throws RepositoryOperationException If an error occurs during the repository operation.
+	 */
 	@Override
 	public String addNewEntry(Object newuser) throws RepositoryOperationException {
 		try {
-			return repo.save((UserAccount) newuser).getEmail();
+			return repo.save((UserAccountEntity) newuser).getEmail();
 		}
 		catch(IllegalArgumentException exp ) {
 			log.info("Exception occured while saving to repository : " + exp.getCause() + " ::: " + exp.getStackTrace());
@@ -42,11 +49,18 @@ public class UserRepoServiceImpl implements CrudRepoService {
 		}
 	}
 
+	/**
+	 * Fetches existing data from the repository based on the provided ID.
+	 *
+	 * @param id The ID of the data to be fetched.
+	 * @return The fetched object.
+	 * @throws RepositoryOperationException If an error occurs during the repository operation.
+	 */
 	@Override
 	public Object fetchExistingData(String id) throws RepositoryOperationException {
 		try {
 			log.info("Fetching Account details for : " + id);
-			Optional<UserAccount> user = repo.findById(id);
+			Optional<UserAccountEntity> user = repo.findById(id);
 			log.info("User Details : " + user.toString());
 			return user.get();
 		}
@@ -56,16 +70,31 @@ public class UserRepoServiceImpl implements CrudRepoService {
 		}
 	}
 
+	/**
+	 * Deletes data from the repository.
+	 *
+	 * @return {@code true} if deletion is successful, {@code false} otherwise.
+	 */
 	@Override
 	public boolean deleteData() {
 		return false;
 	}
-	
+
+	/**
+	 * Modifies existing data in the repository.
+	 *
+	 * @return {@code true} if modification is successful, {@code false} otherwise.
+	 */
 	@Override
 	public boolean modifyExistingData() {
 		return false;
 	}
 
+	/**
+	 * @param userid
+	 *
+	 * @return The fetched object using primary key
+	 */
 	public boolean userExist(String userid) {
         return repo.existsById(userid);
     }

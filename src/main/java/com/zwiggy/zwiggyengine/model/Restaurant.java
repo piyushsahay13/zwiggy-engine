@@ -8,6 +8,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -27,12 +28,18 @@ public class Restaurant extends Account {
 		this.isOnlyVeg = isOnlyVeg;
 	}
 	@JsonProperty(value = "RestaurantName")
-	@NotNull
+	@NotBlank(message = "Restaurant Name is mandatory")
+	@NotNull(message = "Restaurant Name is mandatory")
 	private String restaurantName;
 	@JsonProperty(value = "IsPureVeg")
 	private boolean isOnlyVeg;
+	@NotBlank(message = "Restaurant Detail is mandatory")
+	@NotNull(message = "Restaurant Detail is mandatory")
+	@JsonProperty(value = "RestaurantDetails")
+	private List<RestaurantDetail> restDetails;
 	@JsonProperty(value = "RestaurantFeedback")
 	private List<Feedback> restFeedback;
 	@JsonProperty(value = "AverageRating")
 	private float avgRating;
+
 }
