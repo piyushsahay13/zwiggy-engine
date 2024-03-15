@@ -23,8 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GlobalExceptionHandler {
 	
-	@ExceptionHandler({UserValidationException.class, InvalidUserException.class})
-	public ResponseEntity<ErrorResponse> handleUserValidation(Exception ex) {
+	@ExceptionHandler({UserValidationException.class, InvalidUserException.class,EmailDeliveryException.class})
+	protected ResponseEntity<ErrorResponse> handleUserValidation(Exception ex) {
 		ErrorResponse err = new ErrorResponse();
 		if (ex instanceof UserValidationException || ex instanceof InvalidUserException) {
 			String errDes = ex.getMessage();

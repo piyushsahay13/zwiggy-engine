@@ -1,10 +1,8 @@
-package com.zwiggy.zwiggyengine.service;
+package com.zwiggy.zwiggyengine.repositories;
 
 import com.zwiggy.zwiggyengine.constant.ErrorMsgEnum;
-import com.zwiggy.zwiggyengine.entity.RestaurantsEntity;
-import com.zwiggy.zwiggyengine.entity.UserAccountEntity;
+import com.zwiggy.zwiggyengine.entity.BranchEntity;
 import com.zwiggy.zwiggyengine.exception.RepositoryOperationException;
-import com.zwiggy.zwiggyengine.repositories.RestaurantRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -15,22 +13,22 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-public class RestaurantRepoServiceImpl implements CrudRepoService {
+public class MenuRepoServiceImpl implements CrudRepoService {
 
     @Autowired
-    private RestaurantRepository repo;
+    private MenuRepository repository;
 
     /**
      * Adds a new entry to the repository.
      *
-     * @param restDetails The object to be added.
+     * @param menu The object to be added.
      * @return A message indicating the success or failure of the operation.
      * @throws RepositoryOperationException If an error occurs during the repository operation.
      */
     @Override
-    public String addNewEntry(Object restDetails) throws RepositoryOperationException {
+    public String addNewEntry(Object menu) throws RepositoryOperationException {
         try {
-            return repo.save((RestaurantsEntity) restDetails).getRestaurantId();
+            return repository.insert((BranchEntity) menu).getRestaurantId();
         }
         catch(IllegalArgumentException exp ) {
             log.info("Exception occured while saving to repository : " + exp.getCause() + " ::: " + exp.getStackTrace());
@@ -41,20 +39,21 @@ public class RestaurantRepoServiceImpl implements CrudRepoService {
         }
     }
 
+
     /**
      * Fetches existing data from the repository based on the provided ID.
      *
-     * @param id The ID of the data to be fetched.
+     * @param restid The ID of the data to be fetched.
      * @return The fetched object.
      * @throws RepositoryOperationException If an error occurs during the repository operation.
      */
     @Override
-    public Object fetchExistingData(String id) throws RepositoryOperationException {
+    public Object fetchExistingData(String restid) throws RepositoryOperationException {
         try {
-            log.info("Fetching Account details for : " + id);
-            Optional<RestaurantsEntity> user = repo.findByRestaurantId(id);
-            log.info("User Details : " + user.toString());
-            return user.get();
+            log.info("Fetching Account details for : " + restid);
+            Optional<BranchEntity> menu = repository.findById(restid);
+            log.info("Menu Details : " + menu.toString());
+            return menu;
         }
         catch (NoSuchElementException exp) {
             log.info("Exception occured while fetching from repository : " + exp.getMessage() + " ::: " + exp.getStackTrace());
@@ -80,5 +79,18 @@ public class RestaurantRepoServiceImpl implements CrudRepoService {
     @Override
     public boolean modifyExistingData() {
         return false;
+    }
+
+    public BranchEntity fetchByemail(String email){
+        try {
+            log.info("Fetching Account details for : " + email);
+            BranchEntity branchEntity = repository.findByEmailId(email);
+            log.info("Menu Details : " + branchEntity.toString());
+            return branchEntity;
+        }
+        catch (NoSuchElementException exp) {
+            log.info("Exception occured while fetching from repository : " + exp.getMessage() + " ::: " + exp.getStackTrace());
+            throw new RepositoryOperationException(ErrorMsgEnum.getByErrorCode(ErrorMsgEnum.USERNOTEXIST),exp);
+        }
     }
 }

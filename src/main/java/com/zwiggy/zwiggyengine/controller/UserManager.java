@@ -5,6 +5,7 @@ package com.zwiggy.zwiggyengine.controller;
 
 import java.util.Optional;
 
+import com.zwiggy.zwiggyengine.exception.EmailDeliveryException;
 import com.zwiggy.zwiggyengine.model.*;
 import com.zwiggy.zwiggyengine.service.CommonService;
 import io.swagger.annotations.Api;
@@ -53,7 +54,7 @@ public class UserManager {
 
 	@ApiOperation(value = "Create new customer account", notes = "This endpoint create a new customer.")
 	@PostMapping(value = "/createCustomer/v1", produces = "application/json")
-	public ResponseEntity<GenericResponse> createNewUser(@Valid @RequestBody Customer user) throws UserValidationException, InvalidUserException, RepositoryOperationException {
+	public ResponseEntity<GenericResponse> createNewUser(@Valid @RequestBody Customer user) throws UserValidationException, InvalidUserException, RepositoryOperationException, EmailDeliveryException {
 		log.info(user.toString() + " requested to create new customer account.");
 		RequestValidator.validateUser(user, UserType.getCodefrmUsrType(UserType.USER));
 		return new ResponseEntity<>(userService.addNewCustomer(user),HttpStatus.OK);

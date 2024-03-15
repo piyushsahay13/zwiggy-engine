@@ -34,6 +34,4 @@ public class Address {
         private String pincode;
         @JsonProperty(value = "LocationCoordinates")
         private String googleMapLoc;
-//        @JsonProperty(value = "RestaurantMenu")
-//        private List<FoodMenu> restaurantMenu;
 }

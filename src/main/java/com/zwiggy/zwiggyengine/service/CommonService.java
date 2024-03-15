@@ -3,9 +3,14 @@ package com.zwiggy.zwiggyengine.service;
 import com.zwiggy.zwiggyengine.constant.AppConstant;
 import com.zwiggy.zwiggyengine.constant.ErrorMsgEnum;
 import com.zwiggy.zwiggyengine.entity.*;
+import com.zwiggy.zwiggyengine.exception.EmailDeliveryException;
 import com.zwiggy.zwiggyengine.exception.InvalidUserException;
 import com.zwiggy.zwiggyengine.exception.RepositoryOperationException;
 import com.zwiggy.zwiggyengine.model.*;
+import com.zwiggy.zwiggyengine.repositories.MenuRepoServiceImpl;
+import com.zwiggy.zwiggyengine.repositories.RestaurantRepoServiceImpl;
+import com.zwiggy.zwiggyengine.repositories.RestaurantRepository;
+import com.zwiggy.zwiggyengine.repositories.UserRepoServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +31,13 @@ public class CommonService {
     @Autowired
     private MenuRepoServiceImpl menuRepoService;
 
-    public GenericResponse addNewCustomer(Customer userDetails) throws InvalidUserException, RepositoryOperationException {
+    @Autowired
+    private RestaurantRepository restRepo;
+
+    @Autowired
+    private MailServiceImpl mailservice;
+
+    public GenericResponse addNewCustomer(Customer userDetails) throws InvalidUserException, RepositoryOperationException, EmailDeliveryException {
         if(!userRepoService.userExist(userDetails.getEmail())) {
             UserAccountEntity user = new UserAccountEntity();
             user.setEmail(userDetails.getEmail());
@@ -36,10 +47,17 @@ public class CommonService {
             user.setContactNumber(userDetails.getContactNo());
             user.setUsertype(UserType.getCodefrmUsrType(userDetails.getUserType()));
             user.setUserCreationDate(getTodaysDate());
+            userRepoService.addNewEntry(user);
+            if(mailservice.send(mailservice.createMailRequest(userDetails.getEmail()+AppConstant.DASH+userDetails.getFName()+AppConstant.DASH+AppConstant.EMAIL_VERIFICATION))
+                    .equals(AppConstant.SUCCESS))
+            {
+                log.info("User Verification Email sent to " + userDetails.getEmail());
+
+            }
             return GenericResponse.builder()
                     .responseMsg(AppConstant.EMAIL_VERIFY)
                     .respType(AppConstant.SUCCESS)
-                    .emailId(userRepoService.addNewEntry(user)  + AppConstant.USERADDED)
+                    .emailId(userDetails.getEmail()  + AppConstant.USERADDED)
                     .build();
         }
         else {
@@ -48,39 +66,46 @@ public class CommonService {
     }
     public GenericResponse addNewRestaurant(Restaurant restaurantDetails) throws InvalidUserException, RepositoryOperationException {
         UserAccountEntity user = new UserAccountEntity();
-        user.setEmail(restaurantDetails.getEmail());
-        user.setAddress(restaurantDetails.getAddress().get(0).toString());
-        user.setFname(restaurantDetails.getFName());
-        user.setLname(restaurantDetails.getSName());
-        user.setContactNumber(restaurantDetails.getContactNo());
-        if(userRepoService.userExist(restaurantDetails.getEmail())) {
-            user.setUsertype(UserType.getCodefrmUsrType(UserType.USER_RESTAURANT));
+        RestaurantsEntity restDetails = new RestaurantsEntity();
+        String emailId = restRepo.findRestIdByEmail(restaurantDetails.getEmail());
+        if(emailId == null)
+        {
+            user.setEmail(restaurantDetails.getEmail());
+            user.setAddress(restaurantDetails.getAddress().get(0).toString());
+            user.setFname(restaurantDetails.getFName());
+            user.setLname(restaurantDetails.getSName());
+            user.setContactNumber(restaurantDetails.getContactNo());
+            user.setUserCreationDate(getTodaysDate());
+            if(userRepoService.userExist(restaurantDetails.getEmail())) {
+                user.setUsertype(UserType.getCodefrmUsrType(UserType.USER_RESTAURANT));
+            }
+            else {
+                user.setUsertype(UserType.getCodefrmUsrType(restaurantDetails.getUserType()));
+            }
+            UUID id = UUID.randomUUID();
+            log.info("Restaurant Id Created : "+id.toString());
+            restDetails.setRestaurantId(id.toString());
+            restDetails.setEmailId(restaurantDetails.getEmail());
+            restDetails.setRestaurantName(restaurantDetails.getRestaurantName());
+            restDetails.setIsPureVeg('N');
+            restDetails.setAvgRating((double) restaurantDetails.getAvgRating());
+            restDetails.setCity(restaurantDetails.getAddress().get(0).getCity());
+            String username = userRepoService.addNewEntry(user);
+            log.info("User added Success.");
+            String restid = restRepoService.addNewEntry(restDetails);
+            log.info("Restaurant Creation Success.");
+            setupRestaurantMenu(restaurantDetails, restid);
+            log.info("Restauarnt Menu Added.");
+            return GenericResponse.builder()
+                    .responseMsg(AppConstant.EMAIL_VERIFY)
+                    .respType(AppConstant.SUCCESS)
+                    .restId(restid)
+                    .emailId(username + AppConstant.RESTADDED)
+                    .build();
         }
         else {
-            user.setUsertype(UserType.getCodefrmUsrType(restaurantDetails.getUserType()));
+            throw new InvalidUserException(ErrorMsgEnum.getByErrorCode(ErrorMsgEnum.RESTEXIST));
         }
-        user.setUserCreationDate(getTodaysDate());
-        UUID id = UUID.randomUUID();
-        log.info("Restaurant Id Created : "+id.toString());
-        RestaurantsEntity restDetails = new RestaurantsEntity();
-        restDetails.setRestaurantId(id.toString());
-        restDetails.setEmailId(restaurantDetails.getEmail());
-        restDetails.setRestaurantName(restaurantDetails.getRestaurantName());
-        restDetails.setIsPureVeg('N');
-        restDetails.setAvgRating((double) restaurantDetails.getAvgRating());
-        restDetails.setCity(restaurantDetails.getAddress().get(0).getCity());
-        String username = userRepoService.addNewEntry(user);
-        log.info("User added Success.");
-        String restid = restRepoService.addNewEntry(restDetails);
-        log.info("Restaurant Creation Success.");
-        setupRestaurantMenu(restaurantDetails, restid);
-        log.info("Restauarnt Menu Added.");
-        return GenericResponse.builder()
-                .responseMsg(AppConstant.EMAIL_VERIFY)
-                .respType(AppConstant.SUCCESS)
-                .restId(restid)
-                .emailId(username + AppConstant.USERADDED)
-                .build();
     }
     public Customer getCustomerDetailfromId(Optional<String> userid) throws InvalidUserException, RepositoryOperationException {
         String userIdToString = userid.orElseThrow(() -> new InvalidUserException(ErrorMsgEnum.getByErrorCode(ErrorMsgEnum.USERIDERROR)));
@@ -171,6 +196,7 @@ public class CommonService {
     public Date getTodaysDate() {
         return new java.util.Date();
     }
+
 
 
 }
