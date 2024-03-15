@@ -22,7 +22,9 @@ public enum ErrorMsgEnum {
     USERNOTEXIST("ZWENG-0008", "User does not exist please create new account."),
     USERTYPEMISMATCH("ZWENG-0009", "UserType is invalid it should be USER."),
     GEOLOCERROR("ZWENG-0010", "Geo location of user is invalid."),
-    USEREXIST("ZWENG-0011", "Email ID already registered.");
+    USEREXIST("ZWENG-0011", "Email ID already registered."),
+    RESTEXIST("ZWENG-0012", "Email ID already registered as restaurant."),
+    EMAILERROR("ZWENG-0013","Email delivery failed to user.");
 	
     private final String errorCode;
     private final String errorMsg;

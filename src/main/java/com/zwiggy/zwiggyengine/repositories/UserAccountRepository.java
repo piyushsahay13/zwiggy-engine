@@ -3,7 +3,7 @@ package com.zwiggy.zwiggyengine.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.zwiggy.zwiggyengine.entity.UserAccount;
+import com.zwiggy.zwiggyengine.entity.UserAccountEntity;
 
 /**
  * Repository interface for managing userAccount entities using Spring Data JPA.
@@ -13,6 +13,6 @@ import com.zwiggy.zwiggyengine.entity.UserAccount;
  * @since 1.0
  */
 @Repository
-public interface UserAccountRepository extends JpaRepository<UserAccount, String> {
+public interface UserAccountRepository extends JpaRepository<UserAccountEntity, String> {
 
 }

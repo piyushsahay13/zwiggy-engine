@@ -6,7 +6,7 @@ import lombok.Data;
 @Entity
 @Table(name = "RESTAURANTS")
 @Data
-public class Restaurants {
+public class RestaurantsEntity {
     @Id
     @Column(name ="RESTAURANTID")
     private String restaurantId;
